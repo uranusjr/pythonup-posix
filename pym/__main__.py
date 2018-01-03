@@ -24,6 +24,7 @@ def cli(ctx, version):
 @cli.command(help='Install a Python version.')
 @click.argument('version')
 def install(**kwargs):
+    kwargs['name'] = kwargs.pop('version')
     from .operations.install import install
     install(**kwargs)
 
@@ -31,6 +32,7 @@ def install(**kwargs):
 @cli.command(help='Uninstall a Python version.')
 @click.argument('version')
 def uninstall(**kwargs):
+    kwargs['name'] = kwargs.pop('version')
     from .operations.install import uninstall
     uninstall(**kwargs)
 
@@ -38,6 +40,7 @@ def uninstall(**kwargs):
 @cli.command(help='Upgrade an installed Python version.')
 @click.argument('version')
 def upgrade(**kwargs):
+    kwargs['name'] = kwargs.pop('version')
     from .operations.install import upgrade
     upgrade(**kwargs)
 
@@ -59,6 +62,7 @@ def upgrade(**kwargs):
 )
 @click.argument('version')
 def where(**kwargs):
+    kwargs['name'] = kwargs.pop('version')
     from .operations.versions import where
     where(**kwargs)
 
