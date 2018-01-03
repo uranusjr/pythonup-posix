@@ -12,7 +12,12 @@ PYM_ROOT = pathlib.Path
 
 def install(version):
     check_installed(version, expect=False)
-    versions.install(version, versions.find_best(version))
+    try:
+        best = versions.find_best(version)
+    except versions.VersionNotFoundError:
+        click.echo(f'No such version: {version}', err=True)
+        click.get_current_context().exit(1)
+    versions.install(version, best)
 
 
 def uninstall(version):
