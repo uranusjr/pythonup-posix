@@ -63,14 +63,14 @@ def where(**kwargs):
     where(**kwargs)
 
 
-# @cli.command(name='list', help='List Python versions.')
-# @click.option(
-#     '--all', 'list_all', is_flag=True,
-#     help='List all versions (instead of only installed ones).',
-# )
-# def list_(**kwargs):
-#     from .operations.versions import list_
-#     list_(**kwargs)
+@cli.command(name='list', help='List Python versions.')
+@click.option(
+    '--all', 'list_all', is_flag=True,
+    help='List all versions (instead of only installed ones).',
+)
+def list_(**kwargs):
+    from .operations.versions import list_
+    list_(**kwargs)
 
 
 # @cli.command(
