@@ -53,6 +53,13 @@ def find_best(name):
     return version
 
 
+def iter_installed():
+    for path in paths.get_versions_root().iterdir():
+        version = packaging.version.parse(path.name)
+        if isinstance(version, packaging.version.Version):
+            yield version
+
+
 def install(name, version):
     subprocess.check_call([
         'python-build',
@@ -79,8 +86,17 @@ def get_full_version(name):
     return packaging.version.parse(match.group(1))
 
 
-def iter_installed():
-    for path in paths.get_versions_root().iterdir():
-        version = packaging.version.parse(path.name)
-        if isinstance(version, packaging.version.Version):
-            yield version
+def link_cmd(name):
+    source = paths.get_python(name)
+    target = paths.get_python_cmd(name)
+    if target.exists():
+        if source.samefile(target):
+            return
+        target.unlink()
+    target.symlink_to(source)
+
+
+def unlink_cmd(name):
+    target = paths.get_python_cmd(name)
+    if target.exists():
+        target.unlink()
