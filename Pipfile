@@ -8,13 +8,15 @@ name = "pypi"
 [packages]
 
 click = "*"
-requests = "*"
 dataclasses = "*"
 packaging = "*"
+requests = "*"
 
 
 [dev-packages]
 
+ipython = "*"
+pytest = "*"
 
 
 [requires]
