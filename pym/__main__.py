@@ -23,6 +23,7 @@ def cli(ctx, version):
 
 @cli.command(help='Install a Python version.')
 @click.argument('version')
+# @click.option('--use', is_flag=True, help='Use version after installation.')
 def install(**kwargs):
     from .operations.install import install
     install(**kwargs)
