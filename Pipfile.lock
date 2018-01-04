@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "20effa5a535787b68ee19268338f041a53127bfd8d33f2a65d720def6754d4dd"
+            "sha256": "e2da705748ab091126e8a1d3763aa111cc8be09c99823862a014cf3dae043949"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -171,6 +171,12 @@
             ],
             "version": "==0.7.4"
         },
+        "pipfile": {
+            "hashes": [
+                "sha256:f7d9f15de8b660986557eb3cc5391aa1a16207ac41bc378d03f414762d36c984"
+            ],
+            "version": "==0.0.2"
+        },
         "pluggy": {
             "hashes": [
                 "sha256:7f8ae7f5bdf75671a718d2daf0a64b7885f74510bcd98b1a0bb420eb9a9d0cff"
@@ -225,6 +231,12 @@
                 "sha256:70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9"
             ],
             "version": "==1.11.0"
+        },
+        "toml": {
+            "hashes": [
+                "sha256:8e86bd6ce8cc11b9620cb637466453d94f5d57ad86f17e98a98d1f73e3baab2d"
+            ],
+            "version": "==0.9.4"
         },
         "traitlets": {
             "hashes": [

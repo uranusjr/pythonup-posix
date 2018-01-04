@@ -16,6 +16,7 @@ requests = "*"
 [dev-packages]
 
 ipython = "*"
+pipfile = "*"
 pytest = "*"
 
 
