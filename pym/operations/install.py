@@ -4,17 +4,19 @@ import click
 import packaging.version
 
 from .common import check_installation, version_command
-from .link import link_commands, unlink_commands
+from .link import link_commands, unlink_commands, use_versions
 
 
 @version_command()
-def install(version):
+def install(version, use):
     check_installation(
         version, expect=False,
         on_exit=functools.partial(link_commands, version),
     )
     version.install()
     link_commands(version)
+    if use:
+        use_versions([version])
 
 
 @version_command()

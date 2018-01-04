@@ -23,7 +23,7 @@ def cli(ctx, version):
 
 @cli.command(help='Install a Python version.')
 @click.argument('version')
-# @click.option('--use', is_flag=True, help='Use version after installation.')
+@click.option('--use', is_flag=True, help='Use version after installation.')
 def install(**kwargs):
     from .operations.install import install
     install(**kwargs)
@@ -43,15 +43,14 @@ def upgrade(**kwargs):
     upgrade(**kwargs)
 
 
-# @cli.command(help='Set active Python versions.')
-# @click.argument('version', nargs=-1)
-# @click.option(
-#     '--add/--reset', default=None, help='Add version to use without removing.',
-# )
-# @click.pass_context
-# def use(ctx, **kwargs):
-#     from .operations.link import use
-#     use(ctx, **kwargs)
+@cli.command(help='Set active Python versions.')
+@click.argument('version', nargs=-1)
+@click.option(
+    '--add/--reset', default=None, help='Add version to use without removing.',
+)
+def use(**kwargs):
+    from .operations.use import use
+    use(**kwargs)
 
 
 @cli.command(
@@ -72,27 +71,6 @@ def where(**kwargs):
 def list_(**kwargs):
     from .operations.versions import list_
     list_(**kwargs)
-
-
-# @cli.command(
-#     short_help='Link a command from active versions.',
-#     help=('Link a command, or all commands available based on the currently '
-#           'used Python version(s).'),
-# )
-# @click.argument('command', required=False)
-# @click.option(
-#     '--all', 'link_all', is_flag=True,
-#     help='Link all available operations.',
-# )
-# @click.option(
-#     '--overwrite',
-#     type=click.Choice(['yes', 'no', 'smart']), default='yes',
-#     help='What to do when the target exists.',
-# )
-# @click.pass_context
-# def link(ctx, overwrite, **kwargs):
-#     from .operations.link import link, Overwrite
-#     link(ctx, overwrite=Overwrite[overwrite], **kwargs)
 
 
 if __name__ == '__main__':
