@@ -1,102 +1,90 @@
+import dataclasses
 import re
 import shutil
 import subprocess
 
-import packaging.version
-
-from . import paths
+from . import installations, paths
 
 
 class VersionNotFoundError(ValueError):
     pass
 
 
-def iter_buildable_name():
-    """Iterate through all definitions available in python-build.
+def iter_installable_matches():
+    """Iterate through CPython versions available for PYM to install.
     """
     output = subprocess.check_output(
         ['python-build', '--definitions'], encoding='ascii',
     )
-    return iter(output.splitlines())
-
-
-def iter_installable():
-    """Iterate through CPython versions available for PYM to install.
-    """
-    exist_versions = set()
-    for name in iter_buildable_name():
+    for name in output.splitlines():
         match = re.match(r'^(\d+\.\d+)\.\d+$', name)
+        if match:
+            yield match
+
+
+@dataclasses.dataclass(order=True, frozen=True)
+class Version:
+
+    major: int
+    minor: int
+
+    @classmethod
+    def parse(cls, name):
+        match = re.match(r'^(?P<major>\d+)\.(?P<minor>\d+)$', name)
         if not match:
-            continue
-        version = packaging.version.parse(match.group(1))
-        if (isinstance(version, packaging.version.Version) and
-                version not in exist_versions):
-            exist_versions.add(version)
-            yield version
+            raise VersionNotFoundError(name)
+        return cls(
+            major=int(match.group('major')),
+            minor=int(match.group('minor')),
+        )
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def name(self):
+        return f'{self.major}.{self.minor}'
+
+    @property
+    def python_commands(self):
+        return [paths.get_pym_cmd().joinpath(f'python{self.name}')]
+
+    @property
+    def pip_commands(self):
+        return [paths.get_pym_cmd().joinpath(f'pip{self.name}')]
+
+    def iter_matched_build_name(self):
+        """Iterate through CPython versions matching this version.
+        """
+        for match in iter_installable_matches():
+            if match.group(1) == self.name:
+                yield match.group(0)
+
+    def find_best_build_name(self):
+        return max(self.iter_matched_build_name())
+
+    def install(self, *, build_name=None):
+        if build_name is None:
+            build_name = self.find_best_build_name()
+        installation = self.find_installation(strict=False)
+        subprocess.check_call([
+            'python-build', build_name, str(installation.root),
+        ])
+        return installation
+
+    def uninstall(self):
+        root = self.find_installation().root
+        shutil.rmtree(root)
+        return root
+
+    def find_installation(self, *, strict=True):
+        return installations.Installation.find(self, strict=strict)
 
 
-def iter_matched(name):
-    """Iterate through CPython versions matching the given name.
-    """
-    for candidate in iter_buildable_name():
-        if candidate.startswith(f'{name}.'):
-            version = packaging.version.parse(candidate)
-            if isinstance(version, packaging.version.Version):
-                yield version
-
-
-def find_best(name):
-    try:
-        version = max(iter_matched(name))
-    except ValueError:
-        raise VersionNotFoundError(name)
-    return version
-
-
-def iter_installed():
-    for path in paths.get_versions_root().iterdir():
-        version = packaging.version.parse(path.name)
-        if isinstance(version, packaging.version.Version):
-            yield version
-
-
-def install(name, version):
-    subprocess.check_call([
-        'python-build',
-        version.base_version,
-        str(paths.get_installation_root(name)),
-    ])
-
-
-def is_installed(name):
-    return paths.get_installation_root(name).exists()
-
-
-def uninstall(name):
-    path = paths.get_installation_root(name)
-    shutil.rmtree(path)
-    return path
-
-
-def get_full_version(name):
-    output = subprocess.check_output(
-        [str(paths.get_python(name)), '--version'], encoding='ascii',
-    ).strip()
-    match = re.match(r'^Python (\d+\.\d+\.\d+)$', output)
-    return packaging.version.parse(match.group(1))
-
-
-def link_cmd(name):
-    source = paths.get_python(name)
-    target = paths.get_python_cmd(name)
-    if target.exists():
-        if source.samefile(target):
-            return
-        target.unlink()
-    target.symlink_to(source)
-
-
-def unlink_cmd(name):
-    target = paths.get_python_cmd(name)
-    if target.exists():
-        target.unlink()
+def iter_versions():
+    exist_names = set()
+    for match in iter_installable_matches():
+        name = match.group(1)
+        if name not in exist_names:
+            exist_names.add(name)
+            yield Version.parse(name)

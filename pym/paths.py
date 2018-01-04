@@ -33,14 +33,6 @@ def get_versions_root():
     return get_pym_root().joinpath('versions')
 
 
-def get_installation_root(name):
-    return get_versions_root().joinpath(name)
-
-
-def get_python(name):
-    return get_installation_root(name).joinpath('bin', 'python')
-
-
 @ensure_exists()
 def get_pym_cmd():
     return get_pym_root().joinpath('cmd')

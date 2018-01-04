@@ -1,30 +1,35 @@
 import click
 
-from pym import paths, versions
+from pym import installations, versions
 
-from .common import check_installed
+from .common import check_installation, version_command
 
 
+@version_command()
 def where(version):
-    check_installed(version, expect=True)
-    click.echo(str(paths.get_python(version)))
+    installation = check_installation(version, expect=True)
+    click.echo(str(installation.python))
 
 
 def list_(list_all):
-    if list_all:
-        vers = sorted(versions.iter_installable())
-    else:
-        vers = sorted(versions.iter_installed())
-    for v in vers:
-        marker = ' '
-        name = v.base_version
+    outputed = False
+    for version in sorted(versions.iter_versions()):
+        try:
+            installation = version.find_installation()
+        except installations.InstallationNotFoundError:
+            installation = None
         # if name in active_names:
         #     marker = '*'
-        if versions.is_installed(name):
+        if installation:
             marker = 'o'
-        click.echo(f'{marker} {name}')
+            outputed = True
+        else:
+            if not list_all:
+                continue
+            marker = ' '
+        click.echo(f'{marker} {version}')
 
-    if not list_all and not vers:
+    if not list_all and not outputed:
         click.echo(
             'No installed versions. Use --all to list all available versions '
             'for installation.',

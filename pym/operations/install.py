@@ -1,47 +1,47 @@
 import functools
 
 import click
+import packaging.version
 
-from pym import versions
+from .common import check_installation, version_command
+from .link import link_commands, unlink_commands
 
-from .common import check_installed
 
-
-def install(name):
-    check_installed(
-        name, expect=False,
-        on_exit=functools.partial(versions.link_cmd, name),
+@version_command()
+def install(version):
+    check_installation(
+        version, expect=False,
+        on_exit=functools.partial(link_commands, version),
     )
-    try:
-        best = versions.find_best(name)
-    except versions.VersionNotFoundError:
-        click.echo(f'No such version: {name}', err=True)
-        click.get_current_context().exit(1)
-    versions.install(name, best)
-    versions.link_cmd(name)
+    version.install()
+    link_commands(version)
 
 
-def uninstall(name):
-    check_installed(
-        name, expect=True,
-        on_exit=functools.partial(versions.unlink_cmd, name),
+@version_command()
+def uninstall(version):
+    check_installation(
+        version, expect=True,
+        on_exit=functools.partial(unlink_commands, version),
     )
-    click.echo(f'Uninstalling {name}...')
-    versions.unlink_cmd(name)
-    removed_path = versions.uninstall(name)
-    click.echo(f'Removed {name} from {removed_path}')
+    click.echo(f'Uninstalling {version}...')
+    unlink_commands(version)
+    removed_path = version.uninstall()
+    click.echo(f'Removed {version} from {removed_path}')
 
 
-def upgrade(name):
-    check_installed(
-        name, expect=False,
-        on_exit=functools.partial(versions.link_cmd, name),
+@version_command()
+def upgrade(version):
+    installation = check_installation(
+        version, expect=True,
+        on_exit=functools.partial(link_commands, version),
     )
-    current = versions.get_full_version(name)
-    best = versions.find_best(name)
-    if current >= best:
-        click.echo(f'{name} is up to date ({current} >= {best})')
+    curr_build = packaging.version.Version(installation.get_build_name())
+    best_build = packaging.version.Version(version.find_best_build_name())
+    if curr_build == best_build:
+        click.echo(f'{version} is up to date ({curr_build})')
+    elif curr_build > best_build:
+        click.echo(f'{version} is up to date ({curr_build} > {best_build})')
     else:
-        click.echo(f'Upgrading {name} from {current} to {best}...')
-        versions.install(name, best)
-    versions.link_cmd(name)
+        click.echo(f'Upgrading {version} from {curr_build} to {best_build}...')
+        version.install(build_name=best_build)
+    link_commands(version)
