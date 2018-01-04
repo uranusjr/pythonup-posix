@@ -41,6 +41,7 @@ def upgrade(name):
     best = versions.find_best(name)
     if current >= best:
         click.echo(f'{name} is up to date ({current} >= {best})')
-        return
-    click.echo(f'Upgrading {name} from {current} to {best}...')
-    versions.install(name, best)
+    else:
+        click.echo(f'Upgrading {name} from {current} to {best}...')
+        versions.install(name, best)
+    versions.link_cmd(name)
