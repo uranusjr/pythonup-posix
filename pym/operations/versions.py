@@ -1,6 +1,7 @@
 import click
 
 from pym import installations, versions
+from pym.conf import settings
 
 from .common import check_installation, version_command
 
@@ -13,15 +14,17 @@ def where(version):
 
 def list_(list_all):
     outputed = False
+    used_names = set(settings.get('using', []))
     for version in sorted(versions.iter_versions()):
         try:
             installation = version.find_installation()
         except installations.InstallationNotFoundError:
             installation = None
-        # if name in active_names:
-        #     marker = '*'
         if installation:
-            marker = 'o'
+            if version.name in used_names:
+                marker = '*'
+            else:
+                marker = 'o'
             outputed = True
         else:
             if not list_all:
