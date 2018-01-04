@@ -24,9 +24,9 @@ The script would look something like this (not tested)::
     PYTHONPATH="$PYMCELLAR/$(ls -1 "$PYMCELLAR" | tail -n1):$PYTHONPATH"
     "$PREFIX/bin/python3" -m pym $@
 
-So we always use the latest Homebrew Python to run PYM as a module. This avoids
-the need of revision-bumping after each Homebrew Python upgrade, which is
-ridiculus to me.
+So we always use the latest Homebrew Python to run PYM as a module. All Python
+dependencies will be vendored inside the keg. This avoids the need of
+revision-bumping after each Homebrew Python upgrade, which is ridiculus to me.
 
 I don’t think this is acceptable for Homebrew (I can be wrong), so the formula
 will be in a tap for now.
