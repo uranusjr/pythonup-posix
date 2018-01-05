@@ -5,11 +5,13 @@ PythonUp — The Python Runtime Manager (macOS)
 PythonUp helps your install, and manage Python runtimes on your computer. This
 is the macOS version.
 
-.. tip:: Windows user? Check out SNAFU_.
+.. highlights::
+
+    Windows user? Check out SNAFU_.
 
 .. _SNAFU: https://github.com/uranusjr/snafu
 
-.. warning::
+.. highlights::
     This is a work in progress. You are welcomed to try it, and I’ll try to
     resolve any problems you have using it. I’m still experimenting much of the
     internals, however, so anything can break when you upgrade without
