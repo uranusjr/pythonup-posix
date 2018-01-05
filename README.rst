@@ -2,7 +2,7 @@
 PythonUp — The Python Runtime Manager (macOS)
 =============================================
 
-PythonUp helps your install, and manage Python runtimes on your computer. This
+PythonUp helps your install and manage Python runtimes on your computer. This
 is the macOS version.
 
 .. highlights::
@@ -23,7 +23,7 @@ Distribution
 
 PythonUp is officially distributed with Homebrew_. Install it with::
 
-    brew install uranusjr/pythonup/pythonup
+    brew install --HEAD uranusjr/pythonup/pythonup
 
 .. _Homebrew: https://brew.sh
 
@@ -127,3 +127,27 @@ when user queries Python versions (e.g. with ``install`` and ``list``).
 
 Another benefit of vendoring is that we don’t need the ``python-build`` command
 to be globally available.
+
+
+Explain things
+--------------
+
+Obvious question: Why not just use pyenv? Because you always want to use the
+latest micro of a Python version, but pyenv doesn’t let you do that easily
+without breaking all your virtual environments and globally installed tools.
+Also the shims are a terrible idea.
+
+
+Tests
+-----
+
+I always say this, but all my projects are under-tested. Hashtag help-wanted.
+
+
+Documentation
+-------------
+
+It *might* be a good idea to unify the documentation? It makes sense from a
+user’s perspective because the interfaces are almost identical. The
+implementation and all underlying parts are different though. This would
+require some very careful planning.
