@@ -1,7 +1,7 @@
 import contextlib
 import json
 
-from .paths import get_pym_root
+from . import paths
 
 
 def safe_load(f):
@@ -15,7 +15,7 @@ class Settings:
 
     @property
     def config(self):
-        path = get_pym_root().joinpath('config')
+        path = paths.get_root_dir().joinpath('config')
         if not path.exists():
             path.touch(mode=0o644, exist_ok=True)
         return path

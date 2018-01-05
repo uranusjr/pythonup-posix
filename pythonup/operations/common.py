@@ -2,7 +2,7 @@ import functools
 
 import click
 
-from pym import installations, versions
+from .. import installations, versions
 
 
 def check_installation(version, *, expect=True, on_exit=None):

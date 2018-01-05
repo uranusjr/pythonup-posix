@@ -1,101 +1,127 @@
-===========================
-PYM: PYthon Manager (macOS)
-===========================
+=============================================
+PythonUp — The Python Runtime Manager (macOS)
+=============================================
 
-Work in progress. Below is the plan.
+PythonUp helps your install, and manage Python runtimes on your computer. This
+is the macOS version.
+
+.. tip:: Windows user? Check out SNAFU_.
+
+.. _SNAFU: https://github.com/uranusjr/snafu
+
+.. warning::
+    This is a work in progress. You are welcomed to try it, and I’ll try to
+    resolve any problems you have using it. I’m still experimenting much of the
+    internals, however, so anything can break when you upgrade without
+    backward-compatibility in mind.
+
 
 Distribution
 ============
 
-PYM will only be (officially) distributed via Homebrew. The formula will
-directly depend on python3, pyenv, and everything else it needs to build
-Pythons. [#]_
+PythonUp is officially distributed with Homebrew_. Install it with::
 
-.. [#] https://github.com/pyenv/pyenv/wiki/Common-build-problems#requirements
+    brew install uranusjr/pythonup/pythonup
 
-The formula does not install anything anywhere outside the keg, except a
-``pym`` script to Homebrew’s bin directory (typically ``/usr/local/bin``).
-The script would look something like this (not tested)::
+.. _Homebrew: https://brew.sh
 
-    #!/bin/sh
+This installs everything you need to install Python runtimes, and provides a
+``pythonup`` command.
 
-    PREFIX="$(brew --prefix)"
-    PYMCELLAR="$PREFIX/Cellar/pym"
-    PYTHONPATH="$PYMCELLAR/$(ls -1 "$PYMCELLAR" | tail -n1):$PYTHONPATH"
-    "$PREFIX/bin/python3" -m pym $@
+PythonUp installs Pythons to ``~/.pythonup/``. You should configure your shell
+to add the following paths to your ``PATH`` environment variable::
 
-So we always use the latest Homebrew Python to run PYM as a module. All Python
-dependencies will be vendored inside the keg. This avoids the need of
-revision-bumping after each Homebrew Python upgrade, which is ridiculus to me.
-
-I don’t think this is acceptable for Homebrew (I can be wrong), so the formula
-will be in a tap for now.
+    $HOME/.pythonup/bin
+    $HOME/.pythonup/cmd
 
 
-Basic Interface
-===============
+Quick Start
+===========
 
-Similar to SNAFU_.
+Install Python 3.6::
 
-.. _Snafu: https://github.com/uranusjr/snafu
+    $ pythonup install 3.6
+
+Run Python::
+
+    $ python3
+
+Install Pipenv to Python 3.6::
+
+    $ pip3.6 install pipenv
+
+And use it immediately::
+
+    $ pipenv --version
+    pipenv, version 9.0.1
+
+Install Python 3.5 (32-bit)::
+
+    $ pythonup install 3.5-32
+
+Switch to a specific version::
+
+    $ pythonup use 3.5-32
+    $ python3 --version
+    Python 3.5.4
+
+Switch back to 3.6::
+
+    $ pythonup use 3.6
+    $ python3 --version
+    Python 3.6.4
+    $ python3.5 --version
+    Python 3.5.4
+
+Uninstall Python::
+
+    $ pythonup uninstall 3.5-32
+
+Use ``--help`` to find more::
+
+    $ pythonup --help
+    $ pythonup install --help
 
 
-Versions
-========
+Internals
+=========
 
-::
+PythonUp uses pyenv’s ``python-build`` command to build the best match, and
+install it into ``$HOME/.pythonup/versions/X.Y``. Unlike pyenv, PythonUp only
+lets you specify X.Y, not the micro part, so you can upgrade within a minor
+version without breaking all your existing virtual environments.
 
-    pym install X.Y
 
-PYM will use pyenv’s ``python-build`` command to build the best match, [#]_
-and install it into ``$HOME/.pym/versions/X.Y``. Unlike pyenv, PYM only lets
-you specify X.Y, not the micro part.
-
-.. [#] https://github.com/pyenv/pyenv/tree/master/plugins/python-build
-
-After installation, a simlink for ``pythonX.Y`` and a shim for ``pipX.Y`` will
-be installed into ``$HOME/.pym/bin``.
-
+Todo
+====
 
 Shims
-=====
+-----
 
-Similar to pyenv (and SNAFU), ``pip`` and ``easy_install`` commands will be
+Similar to pyenv (and SNAFU), ``pip`` and ``easy_install`` commands should be
 shimmed to allow auto-publishing hooks after you install a package. Unlike
 SNAFU, some simple shell scripts will suffice, fortunately. The script will
 be generated dynamically, when the user ``use`` versions, to point to the
 correct version.
 
-We don’t have the registry to work with. A simple ``config`` file inside
-``.pym`` should be enough though. Since all shims know where they point to on
-their own, this config is only needed when the user runs ``pym use --add``.
 
+Bundle python-build
+-------------------
 
-Questions to Answer
-===================
+There are several disadvantages depending on Homebrew’s pyenv:
 
-Do we need to maintain a list of versions?
-------------------------------------------
+* pyenv does not release a new version to add a new Python definition.
+* Homebrew does not always update the pyenv formula when pyenv releases.
 
-I hope not.
+Python 3.6.4, for example, was released on 2017-12-19. The python-build
+definition landed a few hours later, but is still not available as a versioned
+release. Judging from recent release patterns, availability of new Python
+versions can be delayed to up to one month after their official distribution.
 
-The simplest solution is asking ``python-build``::
+I’m personally working around this by using the ``HEAD`` version of pyenv (
+``brew install --HEAD pyenv``), but this is not a good long-term solution. It
+would be better to vendor python-build (maybe as a Git subtree), and update
+when user queries Python versions (e.g. with ``install`` and ``list``).
 
-    python-build --definitions
-
-and use a regular expression to get the right version for the name. The
-downside is that the command is a bit slow (because there are a ton of
-definitions, and the list will only grow longer).
-
-Another way is to look inside pyenv. The definitions are in
-``$INSTALL_ROOT/plugins/python-build/share/python-build/``
-
-But how do we find pyenv’s install root? It is not that difficult if we only
-want to target Homebrew, but… Or maybe we can do something like
-
-* Get the real path of ``pyenv``. It should be in ``$INSTALL_ROOT/bin``.
-* Look for deifnitions with a relative path.
-
-But that seems too fragile. Maybe it would be best to try this, and fallback to
-asking ``python-build`` on failure?
-
+Another benefit of vendoring is that we don’t need the ``python-build`` command
+to be globally available.

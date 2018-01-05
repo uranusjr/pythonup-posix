@@ -11,7 +11,7 @@ class VersionNotFoundError(ValueError):
 
 
 def iter_installable_matches():
-    """Iterate through CPython versions available for PYM to install.
+    """Iterate through CPython versions available for PythonUp to install.
     """
     output = subprocess.check_output(
         ['python-build', '--definitions'], encoding='ascii',
@@ -47,11 +47,11 @@ class Version:
 
     @property
     def python_commands(self):
-        return [paths.get_pym_cmd().joinpath(f'python{self.name}')]
+        return [paths.get_cmd_dir().joinpath(f'python{self.name}')]
 
     @property
     def pip_commands(self):
-        return [paths.get_pym_cmd().joinpath(f'pip{self.name}')]
+        return [paths.get_cmd_dir().joinpath(f'pip{self.name}')]
 
     def iter_matched_build_name(self):
         """Iterate through CPython versions matching this version.

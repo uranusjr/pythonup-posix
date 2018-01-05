@@ -1,21 +1,21 @@
 import click
 
 
-class PYMGroup(click.Group):
-    """Force command name to show 'pym'.
+class PythonUpGroup(click.Group):
+    """Force command name to show 'pythonup'.
     """
     def make_context(self, info_name, *args, **kwargs):
-        return super().make_context('pym', *args, **kwargs)
+        return super().make_context('pythonup', *args, **kwargs)
 
 
-@click.group(cls=PYMGroup, invoke_without_command=True)
+@click.group(cls=PythonUpGroup, invoke_without_command=True)
 @click.option('--version', is_flag=True, help='Print version and exit.')
 @click.pass_context
 def cli(ctx, version):
     if ctx.invoked_subcommand is None:
         if version:
             from . import __version__
-            click.echo('PYM (macOS) {}'.format(__version__))
+            click.echo('PythonUp (macOS) {}'.format(__version__))
         else:
             click.echo(ctx.get_help(), color=ctx.color)
             ctx.exit(1)

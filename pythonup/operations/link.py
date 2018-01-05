@@ -1,7 +1,6 @@
 import click
 
-from pym import paths
-from pym.conf import settings
+from .. import conf, paths
 
 
 def safe_link(source, target):
@@ -65,7 +64,7 @@ def collect_link_sources(versions):
 
 def use_versions(versions):
     link_sources, shim_sources = collect_link_sources(versions)
-    bindir = paths.get_pym_bin()
+    bindir = paths.get_bin_dir()
 
     # TODO: Only show this if there really are things to link.
     # We will need to calculate samefiles for this to happen.
@@ -79,7 +78,7 @@ def use_versions(versions):
         if safe_link(source, bindir.joinpath(name)):
             click.echo(f'  {name}')
 
-    settings['using'] = [v.name for v in versions]
+    conf.settings['using'] = [v.name for v in versions]
 
     stale_targets = set(
         path for path in bindir.iterdir()

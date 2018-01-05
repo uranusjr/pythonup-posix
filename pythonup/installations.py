@@ -17,7 +17,7 @@ class Installation:
 
     @classmethod
     def find(cls, version, *, strict=True):
-        path = paths.get_versions_root().joinpath(version.name)
+        path = paths.get_versions_dir().joinpath(version.name)
         try:
             path = path.resolve(strict=strict)
         except FileNotFoundError:

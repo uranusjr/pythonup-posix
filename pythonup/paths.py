@@ -24,24 +24,20 @@ def ensure_exists(directory=True):
 
 
 @ensure_exists()
-def get_pym_root():
-    return pathlib.Path.home().joinpath('.pym')
+def get_root_dir():
+    return pathlib.Path.home().joinpath('.pythonup')
 
 
 @ensure_exists()
-def get_versions_root():
-    return get_pym_root().joinpath('versions')
+def get_versions_dir():
+    return get_root_dir().joinpath('versions')
 
 
 @ensure_exists()
-def get_pym_cmd():
-    return get_pym_root().joinpath('cmd')
+def get_cmd_dir():
+    return get_root_dir().joinpath('cmd')
 
 
 @ensure_exists()
-def get_pym_bin():
-    return get_pym_root().joinpath('bin')
-
-
-def get_python_cmd(name):
-    return get_pym_cmd().joinpath(f'python{name}')
+def get_bin_dir():
+    return get_root_dir().joinpath('bin')

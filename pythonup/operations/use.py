@@ -1,7 +1,7 @@
 import click
 
-from pym.conf import settings
-from pym.versions import Version
+from ..conf import settings
+from ..versions import Version
 
 from .common import check_installation, version_command
 from .link import use_versions
