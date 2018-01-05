@@ -3,8 +3,21 @@ import functools
 import click
 import packaging.version
 
+from .. import installations, versions
+
 from .common import check_installation, version_command
 from .link import link_commands, unlink_commands, use_versions
+
+
+def has_any_installations():
+    for version in versions.iter_versions():
+        try:
+            version.find_installation()
+        except installations.InstallationNotFoundError:
+            continue
+        else:
+            return True
+    return False
 
 
 @version_command()
@@ -13,6 +26,11 @@ def install(version, use):
         version, expect=False,
         on_exit=functools.partial(link_commands, version),
     )
+
+    if not use and not has_any_installations():
+        use = True
+        click.echo('Will use {} after installation'.format(version))
+
     version.install()
     link_commands(version)
     if use:
