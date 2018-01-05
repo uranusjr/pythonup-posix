@@ -57,13 +57,13 @@ And use it immediately::
     $ pipenv --version
     pipenv, version 9.0.1
 
-Install Python 3.5 (32-bit)::
+Install Python 2.7::
 
     $ pythonup install 3.5-32
 
 Switch to a specific version::
 
-    $ pythonup use 3.5-32
+    $ pythonup use 3.5
     $ python3 --version
     Python 3.5.4
 
@@ -77,7 +77,7 @@ Switch back to 3.6::
 
 Uninstall Python::
 
-    $ pythonup uninstall 3.5-32
+    $ pythonup uninstall 3.5
 
 Use ``--help`` to find more::
 
