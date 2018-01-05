@@ -54,8 +54,8 @@ def use(**kwargs):
 
 
 @cli.command(
-    help='Prints where the executable of Python version is.',
-    short_help='Print python.exe location.',
+    help='Prints where the executable of the given Python version is.',
+    short_help='Print python executable location.',
 )
 @click.argument('version')
 def where(**kwargs):
