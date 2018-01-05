@@ -21,7 +21,7 @@ is the macOS version.
 Distribution
 ============
 
-PythonUp is officially distributed with Homebrew_. Install it with::
+PythonUp for macOS is officially distributed with Homebrew_. Install it with::
 
     brew install --HEAD uranusjr/pythonup/pythonup
 
