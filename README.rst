@@ -117,8 +117,9 @@ There are several disadvantages depending on Homebrew’s pyenv:
 
 Python 3.6.4, for example, was released on 2017-12-19. The python-build
 definition landed a few hours later, but is still not available as a versioned
-release. Judging from recent release patterns, availability of new Python
-versions can be delayed to up to one month after their official distribution.
+release (as of 2018-01-05). Judging from recent release patterns, availability
+of new Python versions can be delayed to up to one month after their official
+distribution.
 
 I’m personally working around this by using the ``HEAD`` version of pyenv (
 ``brew install --HEAD pyenv``), but this is not a good long-term solution. It
