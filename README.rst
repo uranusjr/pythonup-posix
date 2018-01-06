@@ -30,11 +30,11 @@ PythonUp for macOS is officially distributed with Homebrew_. Install it with::
 This installs everything you need to install Python runtimes, and provides a
 ``pythonup`` command.
 
-PythonUp installs Pythons to ``~/.pythonup/``. You should configure your shell
-to add the following paths to your ``PATH`` environment variable::
+PythonUp installs Pythons to ``$HOME/Library/PythonUp``. You should configure
+your shell to add the following paths to your ``PATH`` environment variable::
 
-    $HOME/.pythonup/bin
-    $HOME/.pythonup/cmd
+    $HOME/Library/PythonUp/bin
+    $HOME/Library/PythonUp/cmd
 
 
 Quick Start

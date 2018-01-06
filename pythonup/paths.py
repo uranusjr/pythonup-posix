@@ -25,7 +25,7 @@ def ensure_exists(directory=True):
 
 @ensure_exists()
 def get_root_dir():
-    return pathlib.Path.home().joinpath('.pythonup')
+    return pathlib.Path.home().joinpath('Library', 'PythonUp')
 
 
 @ensure_exists()
