@@ -89,9 +89,9 @@ Internals
 =========
 
 PythonUp uses pyenv’s ``python-build`` command to build the best match, and
-install it into ``$HOME/.pythonup/versions/X.Y``. Unlike pyenv, PythonUp only
-lets you specify X.Y, not the micro part, so you can upgrade within a minor
-version without breaking all your existing virtual environments.
+install it into ``$HOME/Library/PythonUp/versions/X.Y``. Unlike pyenv, PythonUp
+only lets you specify X.Y, not the micro part, so you can upgrade within a
+minor version without breaking all your existing virtual environments.
 
 
 Todo
