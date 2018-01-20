@@ -10,7 +10,6 @@ name = "pypi"
 click = "*"
 dataclasses = "*"
 packaging = "*"
-requests = "*"
 
 
 [dev-packages]
