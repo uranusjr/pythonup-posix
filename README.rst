@@ -52,7 +52,7 @@ Install Pipenv to Python 3.6::
 
     $ pip3.6 install pipenv
 
-And use it immediately::
+And use it immediately (DOES NOT WORK YET, see TODO below)::
 
     $ pipenv --version
     pipenv, version 9.0.1
