@@ -43,6 +43,12 @@ def collect_link_sources(versions):
             # Fully qualified names are already populated on installation.
             'python{}'.format(version.name),
             'pip{}'.format(version.name),
+            # Config commands could confuse ./configure scripts.
+            # Tools like Homebrew don't like them.
+            'python-config',
+            'python{}-config'.format(version.major),
+            'python{}-config'.format(version.name),
+            'python{}m-config'.format(version.name),
         }
         shimmed_stems = {
             # Major version names, e.g. "pip3".
@@ -74,7 +80,7 @@ def use_versions(versions):
     for name, source in link_sources.items():
         if safe_link(source, bindir.joinpath(name)):
             click.echo(f'  {name}')
-    for name, source in shim_sources.items():   # TODO: Shimm these instead.
+    for name, source in shim_sources.items():   # TODO: Shim these instead.
         if safe_link(source, bindir.joinpath(name)):
             click.echo(f'  {name}')
 
