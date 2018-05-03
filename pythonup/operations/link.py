@@ -37,7 +37,7 @@ def collect_link_sources(versions):
     shim_sources = {}
     for version in versions:
         installation = version.find_installation()
-        blacklisted_stems = {
+        blacklisted_names = {
             # Encourage people to always use qualified commands.
             'python', 'easy_install', 'pip',
             # Fully qualified names are already populated on installation.
@@ -50,16 +50,16 @@ def collect_link_sources(versions):
             'python{}-config'.format(version.name),
             'python{}m-config'.format(version.name),
         }
-        shimmed_stems = {
+        shimmed_names = {
             # Major version names, e.g. "pip3".
             'pip{}'.format(version.major),
             # Fully-qualified easy_install.
             'easy_install-{}'.format(version.name),
         }
         for path in installation.root.joinpath('bin').iterdir():
-            if path.stem in blacklisted_stems:
+            if path.name in blacklisted_names:
                 continue
-            if path.stem in shimmed_stems:
+            if path.name in shimmed_names:
                 if path.name not in shim_sources:
                     shim_sources[path.name] = path
             else:
@@ -77,10 +77,12 @@ def use_versions(versions):
     if link_sources or shim_sources:
         click.echo('Publishing executables...')
 
-    for name, source in link_sources.items():
+    for name, source in sorted(link_sources.items()):
         if safe_link(source, bindir.joinpath(name)):
             click.echo(f'  {name}')
-    for name, source in shim_sources.items():   # TODO: Shim these instead.
+
+    # TODO: Shim these instead.
+    for name, source in sorted(shim_sources.items()):
         if safe_link(source, bindir.joinpath(name)):
             click.echo(f'  {name}')
 
