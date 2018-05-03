@@ -100,11 +100,11 @@ Todo
 Shims
 -----
 
-Similar to pyenv (and SNAFU), ``pip`` and ``easy_install`` commands should be
-shimmed to allow auto-publishing hooks after you install a package. Unlike
-SNAFU, some simple shell scripts will suffice, fortunately. The script will
-be generated dynamically, when the user ``use`` versions, to point to the
-correct version.
+Similar to pyenv (and PythonUp on Windows), ``pip`` and ``easy_install``
+commands should be shimmed to allow auto-publishing hooks after you install a
+package. Unlike the Windows implementation, some simple shell scripts will
+suffice, fortunately. The script will be generated dynamically, when the user
+``use`` versions, to point to the correct version.
 
 
 Bundle python-build
