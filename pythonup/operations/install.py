@@ -63,5 +63,5 @@ def upgrade(version):
         click.echo(f'{version} is up to date ({curr_build} > {best_build})')
     else:
         click.echo(f'Upgrading {version} from {curr_build} to {best_build}...')
-        version.install(build_name=best_build)
+        version.install(build_name=str(best_build))
     link_commands(version)
