@@ -7,9 +7,9 @@ is the macOS version.
 
 .. highlights::
 
-    Windows user? Check out SNAFU_.
+    Windows user? Check out `PythonUp-Windows`_.
 
-.. _SNAFU: https://github.com/uranusjr/snafu
+.. _`PythonUp-Windows`: https://github.com/uranusjr/pythonup-windows
 
 .. highlights::
     This is a work in progress. You are welcomed to try it, and I’ll try to
