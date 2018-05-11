@@ -33,8 +33,11 @@ class Installation:
         return self.root.joinpath('bin', 'pip')
 
     def get_build_name(self):
-        output = subprocess.check_output(
+        process = subprocess.run(
             [str(self.python), '--version'], encoding='ascii',
-        ).strip()
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        )
+        # Newer versions use stdout, but older (mainly 2.7) use stderr.
+        output = process.stdout.strip() or process.stderr.strip()
         match = re.match(r'^Python (\d+\.\d+\.\d+)$', output)
         return match.group(1)
