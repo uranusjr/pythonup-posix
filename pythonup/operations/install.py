@@ -55,7 +55,11 @@ def upgrade(version):
         version, expect=True,
         on_exit=functools.partial(link_commands, version),
     )
-    curr_build = packaging.version.Version(installation.get_build_name())
+    try:
+        curr_build = packaging.version.Version(installation.get_build_name())
+    except installation.InvalidBuildError:
+        click.echo(f'Unrecognized build at {installation.root}', err=True)
+        click.get_current_context().exit(1)
     best_build = packaging.version.Version(version.find_best_build_name())
     if curr_build == best_build:
         click.echo(f'{version} is up to date ({curr_build})')

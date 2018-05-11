@@ -10,6 +10,10 @@ class InstallationNotFoundError(ValueError, FileNotFoundError):
     pass
 
 
+class InvalidBuildError(ValueError):
+    pass
+
+
 @dataclasses.dataclass
 class Installation:
 
@@ -40,4 +44,6 @@ class Installation:
         # Newer versions use stdout, but older (mainly 2.7) use stderr.
         output = process.stdout.strip() or process.stderr.strip()
         match = re.match(r'^Python (\d+\.\d+\.\d+)$', output)
+        if not match:
+            raise InvalidBuildError
         return match.group(1)

@@ -21,7 +21,7 @@ def link_commands(version):
     installation = version.find_installation()
     for target in version.python_commands:
         safe_link(installation.python, target)
-    for target in version.pip_commands: # TODO: These should be shimmed.
+    for target in version.pip_commands:     # TODO: These should be shimmed.
         safe_link(installation.pip, target)
 
 
