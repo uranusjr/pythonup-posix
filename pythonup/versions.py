@@ -3,6 +3,8 @@ import re
 import shutil
 import subprocess
 
+import packaging.version
+
 from . import installations, paths
 
 
@@ -54,14 +56,17 @@ class Version:
         return [paths.get_cmd_dir().joinpath(f'pip{self.name}')]
 
     def iter_matched_build_name(self):
-        """Iterate through CPython versions matching this version.
+        """Iterate through CPython version names matching this version.
         """
         for match in iter_installable_matches():
             if match.group(1) == self.name:
                 yield match.group(0)
 
     def find_best_build_name(self):
-        return max(self.iter_matched_build_name())
+        return max(
+            self.iter_matched_build_name(),
+            key=packaging.version.Version,
+        )
 
     def install(self, *, build_name=None):
         if build_name is None:

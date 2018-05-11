@@ -38,7 +38,7 @@ class Installation:
 
     def get_build_name(self):
         process = subprocess.run(
-            [str(self.python), '--version'], encoding='ascii',
+            [str(self.python), '--version'], check=True, encoding='ascii',
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
         )
         # Newer versions use stdout, but older (mainly 2.7) use stderr.
