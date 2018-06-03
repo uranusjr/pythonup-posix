@@ -1,24 +1,24 @@
 import sys
 
 import pipfile
-
-
-def iter_lines(pairs):
-    for k, v in pairs:
-        if v == '*':
-            yield k
-        else:
-            yield f'{k}{v}'
+import requirementslib
 
 
 def main():
     p = pipfile.load(sys.argv[1])
-    for line in iter_lines(p.data['default'].items()):
-        print(line)
+    try:
+        indexes = p.data['_meta']['sources']
+    except KeyError:
+        indexes = []
+    for k, v in p.data['default'].items():
+        r = requirementslib.Requirement.from_pipfile(
+            name=k, indexes=indexes, pipfile=v,
+        )
+        print(r.as_line())
 
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print(f'usage: {sys.argv[0]} Pipfile', file=sys.stderr)
+        print('usage: {cmd} Pipfile'.format(cmd=sys.argv[0]), file=sys.stderr)
         sys.exit(1)
     main()

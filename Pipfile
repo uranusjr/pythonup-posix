@@ -12,6 +12,7 @@ packaging = "*"
 ipython = "*"
 pipfile = "*"
 pytest = "*"
+requirementslib = "*"
 
 [requires]
 python_version = "3.6"
