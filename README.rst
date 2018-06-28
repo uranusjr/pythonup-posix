@@ -18,8 +18,11 @@ is the POSIX version.
     backward-compatibility in mind.
 
 
-Distribution (macOS)
-====================
+Distribution
+============
+
+macOS
+-----
 
 PythonUp for POSIX is officially distributed with Homebrew_. Install it with::
 
@@ -35,6 +38,23 @@ your shell to add the following paths to your ``PATH`` environment variable::
 
     $HOME/Library/PythonUp/bin
     $HOME/Library/PythonUp/cmd
+
+
+Linux
+-----
+
+There is not official distribution for Linux at the current time. You can
+perform manual installation with Git. Aside from usual Python dependencies,
+PythonUp also requires
+
+1. `python-build` from pyenv_. You don’t need to install pyenv, only the
+   ``python-build`` command. Clone the repository, and ``ln -s`` the command
+   (in ``pyenv/plugins/python-build/bin``) into your ``PATH``.
+
+2. Build dependencies for Python. pyenv maintains lists for common package
+   managers: https://github.com/pyenv/pyenv/wiki#suggested-build-environment
+
+.. _pyenv: https://github.com/pyenv/pyenv
 
 
 Quick Start
