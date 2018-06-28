@@ -15,7 +15,7 @@ def cli(ctx, version):
     if ctx.invoked_subcommand is None:
         if version:
             from . import __version__
-            click.echo('PythonUp (macOS) {}'.format(__version__))
+            click.echo('PythonUp (POSIX) {}'.format(__version__))
         else:
             click.echo(ctx.get_help(), color=ctx.color)
             ctx.exit(1)
