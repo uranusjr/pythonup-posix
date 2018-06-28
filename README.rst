@@ -44,8 +44,22 @@ Linux
 -----
 
 There is not official distribution for Linux at the current time. You can
-perform manual installation with Git. Aside from usual Python dependencies,
-PythonUp also requires
+perform manual installation with Git. This is the configuration I use::
+
+    mkdir -p ~/.local/libexec/pythonup-posix
+    cd ~/.local/libexec/pythonup-posix
+    git clone https://github.com/uranusjr/pythonup-posix.git repo
+    python3.6 -m venv --prompt=pythonup-posix venv
+    ./venv/bin/python -m pip install --upgrade setuptools pip
+    ./venv/bin/python -m pip install click dataclasses packaging
+    ln -s $PWD/repo/pythonup ./venv/lib/python3.6/site-packages
+
+After this, you can create a script to run PythonUp like this::
+
+    #!/bin/sh
+    $HOME/.local/libexec/pythonup-posix/venv/bin/python -m pythonup
+
+Aside from usual Python dependencies, PythonUp also requires
 
 1. `python-build` from pyenv_. You don’t need to install pyenv, only the
    ``python-build`` command. Clone the repository, and ``ln -s`` the command
