@@ -1,9 +1,9 @@
 =============================================
-PythonUp — The Python Runtime Manager (macOS)
+PythonUp — The Python Runtime Manager (POSIX)
 =============================================
 
 PythonUp helps your install and manage Python runtimes on your computer. This
-is the macOS version.
+is the POSIX version.
 
 .. highlights::
 
@@ -18,10 +18,10 @@ is the macOS version.
     backward-compatibility in mind.
 
 
-Distribution
-============
+Distribution (macOS)
+====================
 
-PythonUp for macOS is officially distributed with Homebrew_. Install it with::
+PythonUp for POSIX is officially distributed with Homebrew_. Install it with::
 
     brew install --HEAD uranusjr/pythonup/pythonup
 
