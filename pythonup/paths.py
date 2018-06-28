@@ -2,7 +2,7 @@ import functools
 import pathlib
 
 
-def ensure_exists(directory=True):
+def ensure_exists(*, directory=True):
     """Decorator to ensure the returning path exists.
     """
     def wrapper(f):
@@ -25,7 +25,16 @@ def ensure_exists(directory=True):
 
 @ensure_exists()
 def get_root_dir():
-    return pathlib.Path.home().joinpath('Library', 'PythonUp')
+    """Return the root directory, as a :class:`pathlib.Path`.
+
+    This tries to smart-detect the best location to host PythonUp. It tries
+    `~/Library`, which likely only exists on Macs; if that does not exist, use
+    the Linux standard `~/.local/share` instead.
+    """
+    macos_library = pathlib.Path.home().joinpath('Library')
+    if macos_library.exists():
+        return macos_library.joinpath('PythonUp')
+    return pathlib.Path.home().joinpath('.local', 'share', 'pythonup')
 
 
 @ensure_exists()
