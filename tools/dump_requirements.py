@@ -5,8 +5,11 @@ import requirementslib
 
 def main():
     p = requirementslib.Pipfile.load(sys.argv[1])
-    for r in p.get_section('packages').requirements:
-        print(r.as_line())
+    for s in p.sections:
+        if s.name != 'packages':
+            continue
+        for r in s.requirements:
+            print(r.as_line())
 
 
 if __name__ == '__main__':
