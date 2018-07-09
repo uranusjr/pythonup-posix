@@ -10,9 +10,8 @@ packaging = "*"
 
 [dev-packages]
 ipython = "*"
-pipfile = "*"
 pytest = "*"
-requirementslib = "*"
+requirementslib = "~=1.0"
 
 [requires]
 python_version = "3.6"
