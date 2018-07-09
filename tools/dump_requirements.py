@@ -1,19 +1,11 @@
 import sys
 
-import pipfile
 import requirementslib
 
 
 def main():
-    p = pipfile.load(sys.argv[1])
-    try:
-        indexes = p.data['_meta']['sources']
-    except KeyError:
-        indexes = []
-    for k, v in p.data['default'].items():
-        r = requirementslib.Requirement.from_pipfile(
-            name=k, indexes=indexes, pipfile=v,
-        )
+    p = requirementslib.Pipfile.load(sys.argv[1])
+    for r in p.get_section('packages').requirements:
         print(r.as_line())
 
 
