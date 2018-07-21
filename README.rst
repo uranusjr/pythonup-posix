@@ -43,8 +43,9 @@ your shell to add the following paths to your ``PATH`` environment variable::
 Linux
 -----
 
-There is not official distribution for Linux at the current time. You can
-perform manual installation with Git. This is the configuration I use::
+There is no official distribution for Linux at the current time (although
+Linuxbrew_ may work). You can perform a manual installation with Git. This is
+the configuration I use::
 
     mkdir -p ~/.local/libexec/pythonup-posix
     cd ~/.local/libexec/pythonup-posix
@@ -54,7 +55,9 @@ perform manual installation with Git. This is the configuration I use::
     ./venv/bin/python -m pip install click dataclasses packaging
     ln -s $PWD/repo/pythonup ./venv/lib/python3.6/site-packages
 
-After this, you can create a script to run PythonUp like this::
+.. _Linuxbrew: http://linuxbrew.sh
+
+Then you can create a script to run PythonUp like this::
 
     #!/bin/sh
     $HOME/.local/libexec/pythonup-posix/venv/bin/python -m pythonup
