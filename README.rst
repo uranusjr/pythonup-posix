@@ -60,7 +60,7 @@ the configuration I use::
 Then you can create a script to run PythonUp like this::
 
     #!/bin/sh
-    $HOME/.local/libexec/pythonup-posix/venv/bin/python -m pythonup
+    exec $HOME/.local/libexec/pythonup-posix/venv/bin/python -m pythonup
 
 Aside from usual Python dependencies, PythonUp also requires
 
