@@ -1,7 +1,9 @@
 import dataclasses
+import os
 import re
 import shutil
 import subprocess
+import sys
 
 import packaging.version
 
@@ -72,9 +74,15 @@ class Version:
         if build_name is None:
             build_name = self.find_best_build_name()
         installation = self.find_installation(strict=False)
-        subprocess.check_call([
-            'python-build', build_name, str(installation.root),
-        ])
+        env = os.environ.copy()
+        if sys.platform == 'darwin':
+            opts = env.get('PYTHON_CONFIGURE_OPTS', '').split()
+            opts.append('--enable-framework')
+            env['PYTHON_CONFIGURE_OPTS'] = ' '.join(opts)
+        subprocess.check_call(
+            ['python-build', build_name, str(installation.root)],
+            env=env,
+        )
         return installation
 
     def uninstall(self):
