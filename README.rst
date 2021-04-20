@@ -21,31 +21,12 @@ is the POSIX version.
 Distribution
 ============
 
-macOS
------
+1. Clone the repository somethere.
+2. Create a Python environment for the project.
+3. Create a shim to run `pythonup` withe the environment.
+4. Add locations PythonUp installs scripts into to your PATH.
 
-PythonUp for POSIX is officially distributed with Homebrew_. Install it with::
-
-    brew install --HEAD uranusjr/pythonup/pythonup
-
-.. _Homebrew: https://brew.sh
-
-This installs everything you need to install Python runtimes, and provides a
-``pythonup`` command.
-
-PythonUp installs Pythons to ``$HOME/Library/PythonUp``. You should configure
-your shell to add the following paths to your ``PATH`` environment variable::
-
-    $HOME/Library/PythonUp/bin
-    $HOME/Library/PythonUp/cmd
-
-
-Linux
------
-
-There is no official distribution for Linux at the current time (although
-Linuxbrew_ may work). You can perform a manual installation with Git. This is
-the configuration I use::
+This is the steps I use::
 
     mkdir -p ~/.local/libexec/pythonup-posix
     cd ~/.local/libexec/pythonup-posix
@@ -55,9 +36,7 @@ the configuration I use::
     ./venv/bin/python -m pip install click dataclasses packaging
     ln -s $PWD/repo/pythonup ./venv/lib/python3.6/site-packages
 
-.. _Linuxbrew: http://linuxbrew.sh
-
-Then you can create a script to run PythonUp like this::
+Shim to invoke PythonUp::
 
     #!/bin/sh
     exec $HOME/.local/libexec/pythonup-posix/venv/bin/python -m pythonup $*
