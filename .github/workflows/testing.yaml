@@ -1,0 +1,27 @@
+name: Test Build
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - "README.rst"
+      - "LICENSE"
+
+jobs:
+  build-doc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+          architecture: "x64"
+      - name: Install dependencies
+        run: |
+          pip install -U setuptools wheel
+          pip install .
+      - name: Test installation
+        run: pythonup --help
+

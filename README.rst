@@ -18,28 +18,21 @@ is the POSIX version.
     backward-compatibility in mind.
 
 
-Distribution
+Installation
 ============
 
-1. Clone the repository somethere.
-2. Create a Python environment for the project.
-3. Create a shim to run `pythonup` withe the environment.
-4. Add locations PythonUp installs scripts into to your PATH.
+Using pipx_
+-----------
 
-This is the steps I use::
+::
+    $ pipx install pythonup-posix
 
-    mkdir -p ~/.local/libexec/pythonup-posix
-    cd ~/.local/libexec/pythonup-posix
-    git clone https://github.com/uranusjr/pythonup-posix.git repo
-    python3.6 -m venv --prompt=pythonup-posix venv
-    ./venv/bin/python -m pip install --upgrade setuptools pip
-    ./venv/bin/python -m pip install click dataclasses packaging
-    ln -s $PWD/repo/pythonup ./venv/lib/python3.6/site-packages
+Using pip
+---------
 
-Shim to invoke PythonUp::
+::
+    $ pip install --user pythonup-posix
 
-    #!/bin/sh
-    exec $HOME/.local/libexec/pythonup-posix/venv/bin/python -m pythonup $*
 
 Aside from usual Python dependencies, PythonUp also requires
 
@@ -50,6 +43,7 @@ Aside from usual Python dependencies, PythonUp also requires
 2. Build dependencies for Python. pyenv maintains lists for common package
    managers: https://github.com/pyenv/pyenv/wiki#suggested-build-environment
 
+.. _pipx: https://github.com/pypa/pipx
 .. _pyenv: https://github.com/pyenv/pyenv
 
 
